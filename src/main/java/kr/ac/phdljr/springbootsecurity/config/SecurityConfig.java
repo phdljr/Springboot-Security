@@ -32,9 +32,13 @@ public class SecurityConfig {
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 // 나머지 주소는 모든 사용자가 접근 가능
                 .anyRequest().permitAll()
-                .and()
+            .and()
                 .formLogin()
-                .loginPage("/loginForm");
+                .loginPage("/loginForm")
+                // /login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행해줌
+                // 이게 존재하기 때문에 컨트롤러에 /login을 등록해주지 않아도 됨
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/"); // 로그인 완료 시, 이동할 url
         return http.build();
     }
 
